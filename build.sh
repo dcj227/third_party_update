@@ -20,29 +20,32 @@ function build_yaml-cpp() {
     cp -r ../include/yaml-cpp $TO_INCLUDE_DIR
 }
 
-function build_librdkafka() {
-    dir=$1
-    cd $SHELL_FOLDER/$dir/
-    find . | xargs fromdos
-    ./configure --enable-static \
-                --prefix=/usr/local/librdkakfa \
-    && make && make install
-    mkdir -p $TO_DIR/librdkafka
-    cp -r /usr/local/librdkakfa/* $TO_DIR/librdkafka/
-}
+#function build_librdkafka() {
+#    dir=$1
+#    cd $SHELL_FOLDER/$dir/
+#    find . | xargs fromdos
+#    ./configure --enable-static \
+#                --prefix=/usr/local/librdkakfa \
+#                --install-deps \
+#                && make && make install
+#    mkdir -p $TO_DIR/librdkafka
+#    cp -r /usr/local/librdkakfa/* $TO_DIR/librdkafka/
+#}
 
 function build_cppkafka() {
+    apt install librdkafka-dev
+
     dir=$1
     cd $SHELL_FOLDER/$dir/ && rm -rf build
     mkdir build && cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cppkakfa \
-          -CPPKAFKA_BUILD_SHARED=0 -RDKAFKA_ROOT=/usr/local/librdkakfa -RDKAFKA_DIR=submodules/librdkafka .. && make -j4
-          #-RdKafka_INCLUDE_DIR=/usr/local/librdkakfa/include/librdkafka \
-          #-RdKafka_LIBRARY_PATH=/usr/local/librdkakfa/lib .. && make -j4
-    #cp libyaml-cpp.a $TO_LIB_DIR
-    #cp -r ../include/yaml-cpp $TO_INCLUDE_DIR
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cppkafka .. && make -j4 && make install
+
+    mkdir -p $TO_DIR/librdkafka/include $TO_DIR/librdkafka/lib
+    cp -r /usr/include/librdkafka/* $TO_DIR/librdkafka/include/
+    cp /usr/local/lib/*kafka* $TO_DIR/librdkafka/lib/
+
+    cp -r /usr/local/cppkafka $TO_DIR
 }
 
 #build_yaml-cpp submodules/yaml-cpp
-build_librdkafka submodules/librdkafka
-#build_cppkafka submodules/cppkafka
+build_cppkafka submodules/cppkafka

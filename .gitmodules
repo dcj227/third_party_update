@@ -4,3 +4,6 @@
 [submodule "submodules/librdkafka"]
 	path = submodules/librdkafka
 	url = git@github.com:edenhill/librdkafka.git
+[submodule "submodules/cppkafka"]
+	path = submodules/cppkafka
+	url = git@github.com:mfontanini/cppkafka.git
