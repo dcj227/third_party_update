@@ -1,3 +1,6 @@
 [submodule "submodules/yaml-cpp"]
 	path = submodules/yaml-cpp
 	url = git@github.com:jbeder/yaml-cpp.git
+[submodule "submodules/librdkafka"]
+	path = submodules/librdkafka
+	url = git@github.com:edenhill/librdkafka.git
